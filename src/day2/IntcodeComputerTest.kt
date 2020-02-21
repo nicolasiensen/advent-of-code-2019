@@ -22,7 +22,7 @@ internal class IntcodeComputerTest {
 
     @org.junit.jupiter.api.Test
     fun processWhenProgramHasInvalidOpcode() {
-        assertFailsWith<IntcodeComputer.InvalidOpcode> { IntcodeComputer.process(arrayListOf(3,0,0,0,99)) }
+        assertFailsWith<IntcodeComputer.InvalidOpcodeException> { IntcodeComputer.process(arrayListOf(3,0,0,0,99)) }
     }
 
     @org.junit.jupiter.api.Test
@@ -37,6 +37,6 @@ internal class IntcodeComputerTest {
 
     @org.junit.jupiter.api.Test
     fun determineInputPairWhenItIsImpossibleToSolve() {
-        assertFailsWith<IntcodeComputer.IndeterminableOutputException> { IntcodeComputer.determineInputPair(arrayListOf(1,0,0,0,99), 42) }
+        assertFailsWith<IntcodeComputer.IndeterminableInputPairException> { IntcodeComputer.determineInputPair(arrayListOf(1,0,0,0,99), 42) }
     }
 }

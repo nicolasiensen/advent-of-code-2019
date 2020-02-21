@@ -3,8 +3,8 @@ package day2
 import java.lang.Exception
 
 object IntcodeComputer {
-    class InvalidOpcode(message: String) : Exception(message)
-    class IndeterminableOutputException(message: String) : Exception(message)
+    class InvalidOpcodeException(message: String) : Exception(message)
+    class IndeterminableInputPairException(message: String) : Exception(message)
 
     fun process(program: List<Int>): List<Int> {
         var opcodeIndex = 0
@@ -19,7 +19,7 @@ object IntcodeComputer {
             result[output] = when (opcode) {
                 1 -> result[input1] + result[input2]
                 2 -> result[input1] * result[input2]
-                else -> throw InvalidOpcode("Invalid opcode $opcode at position $opcodeIndex")
+                else -> throw InvalidOpcodeException("Invalid opcode $opcode at position $opcodeIndex")
             }
 
             opcodeIndex += 4
@@ -45,6 +45,6 @@ object IntcodeComputer {
             verb++
         }
 
-        throw IndeterminableOutputException("It was not possible to determine an input for the given program and desired output")
+        throw IndeterminableInputPairException("It was not possible to determine an input for the given program and desired output")
     }
 }
