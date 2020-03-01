@@ -7,33 +7,27 @@ import kotlin.test.assertFailsWith
 
 internal class CentralPortTest {
     @Test
-    fun findManhattanDistanceToClosestIntersectionWhenThereAreNoWires() {
-        val centralPort = CentralPort(listOf())
-        assertFailsWith<CentralPort.NoIntersectionException> { centralPort.findManhattanDistanceToClosestIntersection() }
-    }
-
-    @Test
-    fun findManhattanDistanceToClosestIntersectionWhenThereAreTwoWiresThatIntersectOnce() {
+    fun findManhattanDistanceToClosestIntersectionWhenTheWiresIntersectOnce() {
         val wire1Steps = listOf(WireVector("U1"), WireVector("R1"))
         val wire1 = Wire(wire1Steps)
 
         val wire2Steps = listOf(WireVector("R1"), WireVector("U1"))
         val wire2 = Wire(wire2Steps)
 
-        val centralPort = CentralPort(listOf(wire1, wire2))
+        val centralPort = CentralPort(wire1, wire2)
 
         assertEquals(2, centralPort.findManhattanDistanceToClosestIntersection())
     }
 
     @Test
-    fun findManhattanDistanceToClosestIntersectionWhenThereAreTwoWiresThatIntersectTwice() {
+    fun findManhattanDistanceToClosestIntersectionWhenTheWiresIntersectTwice() {
         val wire1Steps = listOf(WireVector("U3"), WireVector("R2"), WireVector("D2"), WireVector("L1"))
         val wire1 = Wire(wire1Steps)
 
         val wire2Steps = listOf(WireVector("R3"), WireVector("U2"), WireVector("L2"), WireVector("D1"))
         val wire2 = Wire(wire2Steps)
 
-        val centralPort = CentralPort(listOf(wire1, wire2))
+        val centralPort = CentralPort(wire1, wire2)
 
         assertEquals(2, centralPort.findManhattanDistanceToClosestIntersection())
     }
@@ -58,8 +52,47 @@ internal class CentralPortTest {
 
         val wire2 = Wire(wire2Steps)
 
-        val centralPort = CentralPort(listOf(wire1, wire2))
+        val centralPort = CentralPort(wire1, wire2)
 
         assertEquals(2, centralPort.findManhattanDistanceToClosestIntersection())
+    }
+
+    @Test
+    fun sumWiresDistanceToFirstIntersectionWhenTheWiresIntersectInAStraightPath() {
+        val wire1Steps = listOf(WireVector("U1"), WireVector("R1"))
+        val wire1 = Wire(wire1Steps)
+
+        val wire2Steps = listOf(WireVector("R1"), WireVector("U1"))
+        val wire2 = Wire(wire2Steps)
+
+        val centralPort = CentralPort(wire1, wire2)
+
+        assertEquals(4, centralPort.sumWiresDistanceToFirstIntersection())
+    }
+
+    @Test
+    fun sumWiresDistanceToFirstIntersectionWhenTheWiresIntersectInACurvyPath() {
+        val wire1Steps = listOf(WireVector("U2"), WireVector("R1"), WireVector("D1"))
+        val wire1 = Wire(wire1Steps)
+
+        val wire2Steps = listOf(WireVector("R2"), WireVector("U1"), WireVector("L1"))
+        val wire2 = Wire(wire2Steps)
+
+        val centralPort = CentralPort(wire1, wire2)
+
+        assertEquals(8, centralPort.sumWiresDistanceToFirstIntersection())
+    }
+
+    @Test
+    fun sumWiresDistanceToFirstIntersectionWhenTheWiresIntersectTwice() {
+        val wire1Steps = listOf(WireVector("U3"), WireVector("R2"), WireVector("D2"), WireVector("L1"))
+        val wire1 = Wire(wire1Steps)
+
+        val wire2Steps = listOf(WireVector("R3"), WireVector("U2"), WireVector("L2"), WireVector("D1"))
+        val wire2 = Wire(wire2Steps)
+
+        val centralPort = CentralPort(wire1, wire2)
+
+        assertEquals(12, centralPort.sumWiresDistanceToFirstIntersection())
     }
 }

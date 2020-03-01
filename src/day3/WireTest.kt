@@ -3,6 +3,7 @@ package day3
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import java.awt.Point
+import kotlin.test.assertFailsWith
 
 internal class WireTest {
     @Test
@@ -39,5 +40,19 @@ internal class WireTest {
             ),
             wire1.findIntersections(wire2)
         )
+    }
+
+    @Test
+    fun getDistanceToPointWhenWireHasNoVectors() {
+        val wire = Wire(listOf())
+        assertFailsWith<Wire.WireNeverCrossesThePointException> { wire.getDistanceToPoint(Point(1, 1)) }
+    }
+
+    @Test
+    fun getDistanceToPointWhenPointIsOnWiresPath() {
+        val wireSteps = listOf(WireVector("U1"))
+        val wire = Wire(wireSteps)
+
+        assertEquals(1, wire.getDistanceToPoint(Point(0,1)))
     }
 }

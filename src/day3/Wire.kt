@@ -1,8 +1,11 @@
 package day3
 
 import java.awt.Point
+import java.lang.Exception
 
 class Wire(wireVectors: List<WireVector>) {
+    class WireNeverCrossesThePointException(message: String) : Exception(message)
+
     private val points = mutableListOf<Point>()
 
     init {
@@ -15,5 +18,15 @@ class Wire(wireVectors: List<WireVector>) {
 
     fun findIntersections(wire: Wire) : List<Point> {
         return points.filter { wire.points.contains(it) }
+    }
+
+    fun getDistanceToPoint(point: Point) : Int {
+        val distance = points.indexOf(point) + 1
+
+        if (distance > 0) {
+            return distance
+        } else {
+            throw WireNeverCrossesThePointException("The wire never crosses the point [${point.x}, ${point.y}]")
+        }
     }
 }
