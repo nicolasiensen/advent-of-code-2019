@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test
 internal class PasswordTest {
     @Test
     fun isValidWhenValueMeetsAllCriteria() {
-        assertEquals(true, Password(111111).isValid())
+        assertEquals(true, Password(123455).isValid())
     }
 
     @Test
@@ -25,7 +25,27 @@ internal class PasswordTest {
     }
 
     @Test
-    fun isValidWhenValueHasADigitThatDecreasesGoingLeftToRight() {
+    fun isValidWhenValueHasDecreasingDigit() {
         assertEquals(false, Password(223450).isValid())
+    }
+
+    @Test
+    fun isValidWhenValueHasTwoEqualAdjacentDigitsThreeTimes() {
+        assertEquals(true, Password(112233).isValid())
+    }
+
+    @Test
+    fun isValidWhenValueHasNotExactlyTwoEqualAdjacentDigits() {
+        assertEquals(false, Password(123444).isValid())
+    }
+
+    @Test
+    fun isValidWhenValueHasEqualAdjacentDigits() {
+        assertEquals(true, Password(111122).isValid())
+    }
+
+    @Test
+    fun isValidWhenExactlyTwoEqualAdjacentDigitsIsNotRequiredAndHasEqualAdjacentDigits() {
+        assertEquals(true, Password(111111, false).isValid())
     }
 }

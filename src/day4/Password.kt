@@ -1,34 +1,35 @@
 package day4
 
-class Password(val value: Int) {
+class Password(private val value: Int, private val exactlyTwoEqualAdjacentDigits : Boolean = true) {
     fun isValid() : Boolean {
-        val stringValue = value.toString()
-        if (stringValue.length != 6) return false
+        return hasSixDigits()
+                && !hasDecreasingDigit()
+                && if (exactlyTwoEqualAdjacentDigits) hasExactlyTwoEqualAdjacentDigits() else hasEqualAdjacentDigits()
+    }
 
-        var i = 0
-        var hasEqualAdjacentDigits = false
+    private fun hasSixDigits() : Boolean {
+        return value.toString().length == 6
+    }
 
-        while (i < stringValue.length - 1) {
-            if (stringValue[i] == stringValue[i + 1]) {
-                hasEqualAdjacentDigits = true
-            }
-            i++
-        }
+    private fun hasEqualAdjacentDigits() : Boolean {
+        return value.toString()
+            .toList()
+            .zipWithNext()
+            .any { it.first == it.second }
+    }
 
-        if (!hasEqualAdjacentDigits) return false
+    private fun hasExactlyTwoEqualAdjacentDigits() : Boolean {
+        return value.toString()
+            .map { it.toString() }
+            .reduce { acc, c -> if (acc.substring(acc.lastIndex) == c) "$acc$c" else "$acc,$c" }
+            .split(",")
+            .any { it.length == 2 }
+    }
 
-        var hasDecreasingDigit = false
-        i = 1
-
-        while (i < stringValue.length) {
-            if (stringValue[i - 1].toInt() > stringValue[i].toInt()) {
-                hasDecreasingDigit = true
-            }
-            i++
-        }
-
-        if (hasDecreasingDigit) return false
-
-        return true
+    private fun hasDecreasingDigit() : Boolean {
+        return value.toString()
+            .map { it.toInt() }
+            .zipWithNext()
+            .any { it.first > it.second }
     }
 }
